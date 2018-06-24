@@ -1,0 +1,152 @@
+{
+ "animationLibrary" : 
+ {
+  "combinedAnim_0" : "meshes/walk_col.dae"
+ },
+ "meshLibrary" : 
+ {
+  "mage" : "meshes/CharTex.dae",
+  "map" : "meshes/MapDe.fbx"
+ },
+ "scene" : 
+ {
+  "children" : 
+  [
+   {
+    "children" : [],
+    "mesh" : 
+    {
+     "name" : "map"
+    },
+    "transform" : 
+    {
+     "origin" : 
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "position" : 
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotationEuler" : 
+     [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "scale" : 
+     [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "type" : "MeshNode"
+   },
+   {
+    "children" : 
+    [
+     {
+      "animation" : 
+      {
+       "name" : "combinedAnim_0"
+      },
+      "children" : [],
+      "mesh" : 
+      {
+       "name" : "mage"
+      },
+      "transform" : 
+      {
+       "origin" : 
+       [
+        0.0,
+        0.0,
+        0.0
+       ],
+       "position" : 
+       [
+        0.0,
+        0.0,
+        10.0
+       ],
+       "rotationEuler" : 
+       [
+        0.0,
+        -0.0,
+        0.0
+       ],
+       "scale" : 
+       [
+        0.1666666716337204,
+        0.1666666716337204,
+        0.1666666716337204
+       ]
+      },
+      "type" : "MeshNode"
+     }
+    ],
+    "transform" : 
+    {
+     "origin" : 
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "position" : 
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rotationEuler" : 
+     [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "scale" : 
+     [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "type" : "SceneNode"
+   }
+  ],
+  "transform" : 
+  {
+   "origin" : 
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "position" : 
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rotationEuler" : 
+   [
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "scale" : 
+   [
+    1.0,
+    1.0,
+    1.0
+   ]
+  },
+  "type" : "SceneNode"
+ }
+}
