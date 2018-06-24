@@ -20,24 +20,6 @@ set(TEST_FILES
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
 
-# Find SFML
-#set(SFML_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib/cmake/SFML")
-#find_package(SFML 2 REQUIRED  window system)
-
-# Setup assimp, we need to create a target ourself
-#FILE(GLOB ASSIMP_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib/cmake/assimp*")
-#find_package(ASSIMP REQUIRED)
-#if (ASSIMP_FOUND)
-#  set(ASSIMP_LIBRARY "assimp")
-#  add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
-#  set_target_properties(${ASSIMP_LIBRARY} PROPERTIES
-#    IMPORTED_LOCATION "${ASSIMP_LIBRARY_DIRS}/libassimp.so")
-#endif()
-
-#jsoncpp
-#set(jsoncpp_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib64/cmake/jsoncpp")
-#find_package(jsoncpp REQUIRED)
-
 # Link everyhing
 # Find SFML
 set(SFML_DIR "${CMAKE_SOURCE_DIR}/../extlibs/lib/cmake/SFML")

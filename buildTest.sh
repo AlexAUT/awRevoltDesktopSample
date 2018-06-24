@@ -1,5 +1,7 @@
 set -e
 
+cd $(dirname $0)
+
 cd ..
 ./buildLib.sh
 cd test/
