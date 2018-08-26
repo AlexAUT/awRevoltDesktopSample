@@ -13,6 +13,7 @@
   "children" : 
   [
    {
+    "name": "map",
     "children" : [],
     "mesh" : 
     {

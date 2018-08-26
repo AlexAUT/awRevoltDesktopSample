@@ -24,6 +24,8 @@ DEFINE_LOG_CATEGORY(Test, aw::log::Debug, TestState)
 #include <functional>
 #include <stack>
 
+#include <aw/utils/spatial/octree.hpp>
+
 #include "assimpImporter.hpp"
 
 TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
@@ -78,6 +80,16 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
       mMeshRenderer.registerMesh(meshNode);
     for (auto& child : it->getChildren())
       searchStack.push(child);
+  }
+
+  auto* mapNode = mSceneNode.searchNodeByName("map");
+  if (mapNode)
+  {
+    aw::Octree octree(mapNode);
+  }
+  else
+  {
+    LogTemp() << "Map not found!";
   }
 }
 
