@@ -6,12 +6,49 @@
  "meshLibrary" : 
  {
   "mage" : "meshes/CharTex.dae",
-  "map" : "meshes/MapDe.fbx"
+  "map" : "meshes/MapDe.fbx",
+  "sphere": "meshes/unitSphere.fbx"
  },
  "scene" : 
  {
   "children" : 
   [
+   {
+    "name": "sphere",
+    "children": [],
+    "mesh":
+    {
+      "name": "sphere"
+    },
+    "transform" :
+    {
+     "origin" :
+     [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "position" :
+     [
+      8.3,
+      4.0,
+      15.0
+     ],
+     "rotationEuler" :
+     [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "scale" :
+     [
+      1.0,
+      2.5,
+      1.0
+     ]
+    },
+    "type": "MeshNode"
+   },
    {
     "name": "map",
     "children" : [],

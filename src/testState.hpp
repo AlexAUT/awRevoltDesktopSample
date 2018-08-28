@@ -25,6 +25,8 @@
 #include <aw/runtime/renderers/meshRenderer.hpp>
 
 #include <aw/utils/math/vector.hpp>
+#include <aw/utils/spatial/AABBTriangleIntersector.hpp>
+#include <aw/utils/spatial/octree.hpp>
 
 #include <aw/runtime/scene/sceneNode.hpp>
 
@@ -36,11 +38,29 @@ namespace aw
 class Engine;
 } // namespace aw
 
+struct MeshTriangle
+{
+  const aw::MeshObject* obj;
+  const unsigned* triangle;
+};
+
+struct Intersector
+{
+  static int testCount;
+  bool operator()(aw::AABB& box, const MeshTriangle& triangle)
+  {
+    aw::AABBTriangleIntersector i;
+    testCount++;
+    return i(box, triangle.obj->vertices[triangle.triangle[0]].position,
+             triangle.obj->vertices[triangle.triangle[1]].position,
+             triangle.obj->vertices[triangle.triangle[2]].position);
+  }
+};
 class TestState : public aw::State
 {
 public:
   TestState(aw::StateMachine& stateMachine, aw::Engine& engine);
-  ~TestState();
+  virtual ~TestState();
 
   void update(float delta) final;
   void render() final;
@@ -72,4 +92,6 @@ private:
 
   aw::Vec2 mOldMousePos;
   bool mMouseInit{false};
+
+  std::unique_ptr<aw::Octree<MeshTriangle, Intersector>> mMapOctree;
 };

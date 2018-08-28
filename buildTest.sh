@@ -4,7 +4,7 @@ cd $(dirname $0)
 
 cd ..
 ./buildLib.sh
-cd test/
+cd awRevoltDesktopSample/
 
 mkdir -p build
 cd build

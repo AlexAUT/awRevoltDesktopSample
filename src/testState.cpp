@@ -24,9 +24,9 @@ DEFINE_LOG_CATEGORY(Test, aw::log::Debug, TestState)
 #include <functional>
 #include <stack>
 
-#include <aw/utils/spatial/octree.hpp>
-
 #include "assimpImporter.hpp"
+
+int Intersector::testCount = 0;
 
 TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
     : aw::State(stateMachine), mEngine(engine),
@@ -82,10 +82,24 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
       searchStack.push(child);
   }
 
-  auto* mapNode = mSceneNode.searchNodeByName("map");
+  auto* mapNode = (aw::MeshNode*)mSceneNode.searchNodeByName("map");
   if (mapNode)
   {
-    aw::Octree octree(mapNode);
+    const auto& mesh = mapNode->meshInstance().getMesh();
+    auto bounds = mesh.getBounds();
+    mMapOctree = std::make_unique<aw::Octree<MeshTriangle, Intersector>>(bounds, 20, 10);
+    Intersector intersector;
+    for (int i = 0; i < mesh.getObjectCount(); i++)
+    {
+      const auto& meshObj = mesh.getObject(i);
+      LogTemp() << "Number of triangles: " << meshObj.indices.size();
+      for (int j = 0; j < meshObj.indices.size(); j += 3)
+      {
+        MeshTriangle t{&meshObj, &meshObj.indices[j]};
+        mMapOctree->addElement(t, intersector);
+      }
+    }
+    LogTemp() << "Generating octree took: " << intersector.testCount << " AABB triangle tests";
   }
   else
   {
@@ -121,6 +135,23 @@ void TestState::update(float delta)
       meshNode->meshInstance().update(delta);
     for (auto& child : it->getChildren())
       searchStack.push(child);
+  }
+
+  // Octree test
+  auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+  if (sphereNode)
+  {
+    auto localBounds = sphereNode->meshInstance().getMesh().getBounds();
+    auto globalBounds = aw::AABB::createFromTransform(localBounds, sphereNode->getGlobalTransform());
+
+    auto print = [](MeshTriangle t) {
+      return;
+      LogTemp() << "Collison with: " << t.triangle[0];
+    };
+    Intersector inter;
+    inter.testCount = 0;
+    mMapOctree->traverse(print, globalBounds, inter);
+    LogTemp() << "Traversing octree for cube: " << inter.testCount << " AABB triangle tests";
   }
 }
 
@@ -198,5 +229,22 @@ void TestState::processEvent(const aw::WindowEvent& event)
       mCamController.rotateVertical(moveFactor);
     if (event.key.code == sf::Keyboard::D)
       mCamController.rotateVertical(-moveFactor);
+    if (event.key.code == sf::Keyboard::Escape)
+      mEngine.terminate();
+
+    auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+    if (sphereNode)
+    {
+      if (event.key.code == sf::Keyboard::Left)
+        sphereNode->localTransform().move({-0.5f, 0.f, 0.f});
+      if (event.key.code == sf::Keyboard::Right)
+        sphereNode->localTransform().move({0.5f, 0.f, 0.f});
+      if (event.key.code == sf::Keyboard::Up)
+        sphereNode->localTransform().move({0.f, 0.5f, 0.f});
+      if (event.key.code == sf::Keyboard::Down)
+        sphereNode->localTransform().move({0.f, -0.5f, 0.f});
+
+      LogTemp() << sphereNode->localTransform().getPosition();
+    }
   }
 }
