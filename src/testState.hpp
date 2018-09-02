@@ -6,6 +6,7 @@
 
 #include <aw/graphics/core/camera.hpp>
 #include <aw/graphics/core/frameBuffer.hpp>
+#include <aw/graphics/core/intermediateRenderer.hpp>
 #include <aw/graphics/core/shaderProgram.hpp>
 #include <aw/graphics/core/texture2D.hpp>
 #include <aw/graphics/core/vertexArrayObject.hpp>
@@ -89,6 +90,8 @@ private:
   aw::MeshRenderer mMeshRenderer;
 
   aw::OrbitCameraController mCamController;
+
+  aw::IntermediateRenderer<aw::VertexPosColor> mDebugRenderer;
 
   aw::Vec2 mOldMousePos;
   bool mMouseInit{false};

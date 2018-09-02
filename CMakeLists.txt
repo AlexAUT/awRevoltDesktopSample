@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 
-project(awRevoltTest VERSION 0.0.1 DESCRIPTION "awRevolt engine test app")
+project(awRevoltDesktopSample VERSION 0.0.1 DESCRIPTION "awRevolt engine test app")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
@@ -22,29 +22,22 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${TEST_FILES})
 
 # Link everyhing
 # Find SFML
-set(SFML_DIR "${CMAKE_SOURCE_DIR}/../extlibs/lib/cmake/SFML")
-find_package(SFML 2 REQUIRED  window system)
+#set(SFML_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib/cmake/SFML")
+#find_package(SFML 2 REQUIRED  window system)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-system)
 
 # Setup assimp, we need to create a target ourself
-FILE(GLOB ASSIMP_DIR "${CMAKE_SOURCE_DIR}/../extlibs/lib/cmake/assimp*")
-find_package(ASSIMP REQUIRED)
-if (ASSIMP_FOUND)
-  set(ASSIMP_LIBRARY "assimp")
-  add_library(${ASSIMP_LIBRARY} SHARED IMPORTED)
-  set_target_properties(${ASSIMP_LIBRARY} PROPERTIES
-    IMPORTED_LOCATION "${ASSIMP_LIBRARY_DIRS}/libassimp.so")
-endif()
+FILE(GLOB ASSIMP_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib/cmake/assimp*")
 target_link_libraries(${PROJECT_NAME} ${ASSIMP_LIBRARY})
 #jsoncpp
-set(jsoncpp_DIR "${CMAKE_SOURCE_DIR}/../extlibs/lib64/cmake/jsoncpp")
+set(jsoncpp_DIR "${CMAKE_SOURCE_DIR}/extlibs/lib64/cmake/jsoncpp")
 find_package(jsoncpp REQUIRED)
 target_link_libraries(${PROJECT_NAME} jsoncpp)
 
-add_library(awRevolt SHARED IMPORTED) # or STATIC instead of SHARED
-set_target_properties(awRevolt PROPERTIES
-  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/../extlibs/lib64/libawRevolt.so"
-  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/../extlibs/include/"
-)
+#add_library(awRevolt SHARED IMPORTED) # or STATIC instead of SHARED
+#set_target_properties(awRevolt PROPERTIES
+#  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/extlibs/lib64/libawRevolt.so"
+#  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/extlibs/include/"
+#)
 
 target_link_libraries(${PROJECT_NAME} awRevolt GL)

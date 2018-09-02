@@ -37,7 +37,7 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
   mEventListenerId =
       mEngine.getWindow().registerEventListener(std::bind(&TestState::processEvent, this, std::placeholders::_1));
 
-  glClearColor(0.f, 0.25f, 0.25f, 1.f);
+  glClearColor(0.1f, 0.25f, 0.25f, 1.f);
   mFrameBuffer.create(2048, 2048, 16, 0);
 #ifdef AW_DESKTOP
   GLuint vao;
