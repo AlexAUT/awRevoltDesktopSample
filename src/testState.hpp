@@ -81,6 +81,7 @@ private:
 
   aw::ShaderProgram mMeshShader;
   aw::ShaderProgram mMeshShadowShader;
+  aw::ShaderProgram mSingleColorShader;
 
   aw::Camera mCamera;
   aw::Camera mLightCam;
@@ -91,10 +92,11 @@ private:
 
   aw::OrbitCameraController mCamController;
 
-  aw::IntermediateRenderer<aw::VertexPosColor> mDebugRenderer;
+  aw::IntermediateRenderer<aw::VertexPos> mDebugRenderer;
 
   aw::Vec2 mOldMousePos;
   bool mMouseInit{false};
 
-  std::unique_ptr<aw::Octree<MeshTriangle, Intersector>> mMapOctree;
+  typedef aw::Octree<MeshTriangle, Intersector> MeshOctree;
+  std::unique_ptr<MeshOctree> mMapOctree;
 };

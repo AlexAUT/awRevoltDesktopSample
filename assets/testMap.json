@@ -1,13 +1,12 @@
 {
  "animationLibrary" : 
  {
-  "combinedAnim_0" : "meshes/walk_col.dae"
  },
  "meshLibrary" : 
  {
-  "mage" : "meshes/CharTex.dae",
-  "map" : "meshes/MapDe.fbx",
-  "sphere": "meshes/unitSphere.fbx"
+  "map" : "meshes/MapTest2.fbx",
+  "sphere": "meshes/unitSphere.fbx",
+  "airplane": "meshes/airplane1.fbx"
  },
  "scene" : 
  {
@@ -18,7 +17,7 @@
     "children": [],
     "mesh":
     {
-      "name": "sphere"
+      "name": "airplane"
     },
     "transform" :
     {
@@ -37,13 +36,13 @@
      "rotationEuler" :
      [
       0.0,
-      -0.0,
+      0.0,
       0.0
      ],
      "scale" :
      [
       1.0,
-      2.5,
+      1.0,
       1.0
      ]
     },
@@ -73,7 +72,7 @@
      "rotationEuler" : 
      [
       0.0,
-      -0.0,
+      0.0,
       0.0
      ],
      "scale" : 
@@ -84,78 +83,6 @@
      ]
     },
     "type" : "MeshNode"
-   },
-   {
-    "children" : 
-    [
-     {
-      "animation" : 
-      {
-       "name" : "combinedAnim_0"
-      },
-      "children" : [],
-      "mesh" : 
-      {
-       "name" : "mage"
-      },
-      "transform" : 
-      {
-       "origin" : 
-       [
-        0.0,
-        0.0,
-        0.0
-       ],
-       "position" : 
-       [
-        0.0,
-        0.0,
-        10.0
-       ],
-       "rotationEuler" : 
-       [
-        0.0,
-        -0.0,
-        0.0
-       ],
-       "scale" : 
-       [
-        0.1666666716337204,
-        0.1666666716337204,
-        0.1666666716337204
-       ]
-      },
-      "type" : "MeshNode"
-     }
-    ],
-    "transform" : 
-    {
-     "origin" : 
-     [
-      0.0,
-      0.0,
-      0.0
-     ],
-     "position" : 
-     [
-      0.0,
-      0.0,
-      0.0
-     ],
-     "rotationEuler" : 
-     [
-      0.0,
-      -0.0,
-      0.0
-     ],
-     "scale" : 
-     [
-      1.0,
-      1.0,
-      1.0
-     ]
-    },
-    "type" : "SceneNode"
    }
   ],
   "transform" : 
@@ -175,7 +102,7 @@
    "rotationEuler" : 
    [
     0.0,
-    -0.0,
+    0.0,
     0.0
    ],
    "scale" : 

@@ -13,7 +13,7 @@ then
   apitrace trace build/awRevoltDesktopSample/awRevoltDesktopSample
 elif [ $1 -gt 0 ]
 then
-  gdb build/awRevoltDesktopSample/awRevoltTest
+  gdb build/awRevoltDesktopSample/awRevoltDesktopSample
 else
   build/awRevoltDesktopSample/awRevoltDesktopSample
 fi

@@ -9,11 +9,15 @@
 
 #include "testState.hpp"
 
+#include <aw/graphics/core/geometry.hpp>
+#include <aw/graphics/core/vertex.hpp>
+
 #include <string>
 
 int main()
 {
   aw::LOG_INITIALIZE();
+
   aw::Engine engine;
   //  engine.run();
   aw::priv::saveSettings(engine.getSettings());

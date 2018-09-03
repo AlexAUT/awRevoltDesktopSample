@@ -15,13 +15,17 @@ uniform vec3 camera_viewDir;
 const int MAX_NUM_DIR_LIGHTS = 1;
 uniform DirectionalLight dirLights[MAX_NUM_DIR_LIGHTS];
 
+uniform bool enableDiffuseTex;
+uniform vec3 diffuseColor;
 uniform sampler2D baseColor_tex;
 uniform sampler2D shadow_tex;
 
 void main()
 {
   vec4 color;
-  vec4 diffuseC = texture2D(baseColor_tex, uv);
+  vec4 diffuseC = vec4(diffuseColor, 1.0);
+  if(enableDiffuseTex)
+    diffuseC *= texture2D(baseColor_tex, uv);
   for(int i = 0; i < MAX_NUM_DIR_LIGHTS; i++)
   {
     DirectionalLight l = dirLights[i];
@@ -42,8 +46,11 @@ void main()
     color = diffuseC * diffuse * dirLights[i].energy;
   }
   color.a = 1.0;
-  gl_FragColor = texture2D(baseColor_tex, uv);
+  diffuseC = vec4(diffuseColor, 1.0);
+  if(enableDiffuseTex)
+    diffuseC *= texture2D(baseColor_tex, uv);
+  gl_FragColor = texture2D(baseColor_tex, uv) * 0.25;
   //gl_FragColor = vec4(diffuse, diffuse, diffuse, 1.0);
-  gl_FragColor = color;
+  //gl_FragColor = color;
   //gl_FragColor = vec4(normal, 1.0);
 }

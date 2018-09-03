@@ -56,6 +56,13 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
   auto fShadow = aw::ShaderStage::loadFromAssetFile(aw::ShaderStage::Fragment, "shaders/texture.frag");
   mMeshShadowShader.link(*vMesh, *fShadow);
 
+  auto vSimple = aw::ShaderStage::loadFromAssetFile(Type::Vertex, "shaders/simple.vert");
+  auto fColor = aw::ShaderStage::loadFromAssetFile(Type::Fragment, "shaders/color.frag");
+  mSingleColorShader.link(*vSimple, *fColor);
+  mSingleColorShader.bind();
+  mSingleColorShader.setUniform("fillColor", aw::Vec3{1.f, 0.f, 0.f});
+  mSingleColorShader.unbind();
+
   mCamController.setViewAtPoint({0.f, 0.5f, 10.f});
   mCamController.setDistanceToViewPoint(10.f);
 
@@ -87,12 +94,11 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
   {
     const auto& mesh = mapNode->meshInstance().getMesh();
     auto bounds = mesh.getBounds();
-    mMapOctree = std::make_unique<aw::Octree<MeshTriangle, Intersector>>(bounds, 20, 10);
+    mMapOctree = std::make_unique<aw::Octree<MeshTriangle, Intersector>>(bounds, 100, 5);
     Intersector intersector;
     for (int i = 0; i < mesh.getObjectCount(); i++)
     {
       const auto& meshObj = mesh.getObject(i);
-      LogTemp() << "Number of triangles: " << meshObj.indices.size();
       for (int j = 0; j < meshObj.indices.size(); j += 3)
       {
         MeshTriangle t{&meshObj, &meshObj.indices[j]};
@@ -150,7 +156,7 @@ void TestState::update(float delta)
     };
     Intersector inter;
     inter.testCount = 0;
-    mMapOctree->traverse(print, globalBounds, inter);
+    mMapOctree->traverseElements(print, globalBounds, inter);
     LogTemp() << "Traversing octree for cube: " << inter.testCount << " AABB triangle tests";
   }
 }
@@ -160,7 +166,7 @@ void TestState::render()
   mFrameBuffer.bind();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
+  // glEnable(GL_CULL_FACE);
 
   mMeshRenderer.renderShadowMap(mLightCam, mMeshShadowShader, mDirLight);
 
@@ -169,6 +175,27 @@ void TestState::render()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // aw::PostProcessRenderer::render(mFrameBuffer.getColorTexture());
   mMeshRenderer.renderForwardPass(mCamera, mLightCam, mFrameBuffer.getDepthTexture(), mMeshShader, mDirLight);
+
+  mSingleColorShader.bind();
+  mSingleColorShader.setUniform("mvp_matrix", mCamera.getVPMatrix());
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glDisable(GL_CULL_FACE);
+  mDebugRenderer.clear();
+  auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+  // auto bounds = mMapOctree->getBounds();
+
+  // Iterate over all nodes
+  mMapOctree->traverseNodes(
+      [this](const MeshOctree& node) {
+        auto bounds = node.getBounds();
+        auto boundsCube = aw::geo::cube<aw::VertexPos>(bounds.getCenter(), bounds.getSize());
+        mDebugRenderer.addVertices(boundsCube.begin(), boundsCube.end());
+      },
+      mMapOctree->getBounds());
+
+  mDebugRenderer.render();
+  // glEnable(GL_CULL_FACE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   // glDisable(GL_DEPTH_TEST);
   // aw::PostProcessRenderer::render(mFrameBuffer.getColorTexture());
   // glEnable(GL_DEPTH_TEST);
