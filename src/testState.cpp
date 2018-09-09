@@ -89,7 +89,7 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
       searchStack.push(child);
   }
 
-  auto* mapNode = (aw::MeshNode*)mSceneNode.searchNodeByName("map");
+  auto* mapNode = (aw::MeshNode*)mSceneNode.findNodeByName("map");
   if (mapNode)
   {
     const auto& mesh = mapNode->meshInstance().getMesh();
@@ -144,7 +144,7 @@ void TestState::update(float delta)
   }
 
   // Octree test
-  auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+  auto* sphereNode = (aw::MeshNode*)mSceneNode.findNodeByName("sphere");
   if (sphereNode)
   {
     auto localBounds = sphereNode->meshInstance().getMesh().getBounds();
@@ -174,14 +174,14 @@ void TestState::render()
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // aw::PostProcessRenderer::render(mFrameBuffer.getColorTexture());
-  mMeshRenderer.renderForwardPass(mCamera, mLightCam, mFrameBuffer.getDepthTexture(), mMeshShader, mDirLight);
+  mMeshRenderer.renderForwardPassWithShadow(mCamera, mLightCam, mFrameBuffer.getDepthTexture(), mMeshShader, mDirLight);
 
   mSingleColorShader.bind();
   mSingleColorShader.setUniform("mvp_matrix", mCamera.getVPMatrix());
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glDisable(GL_CULL_FACE);
   mDebugRenderer.clear();
-  auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+  auto* sphereNode = (aw::MeshNode*)mSceneNode.findNodeByName("sphere");
   // auto bounds = mMapOctree->getBounds();
 
   // Iterate over all nodes
@@ -259,7 +259,7 @@ void TestState::processEvent(const aw::WindowEvent& event)
     if (event.key.code == sf::Keyboard::Escape)
       mEngine.terminate();
 
-    auto* sphereNode = (aw::MeshNode*)mSceneNode.searchNodeByName("sphere");
+    auto* sphereNode = (aw::MeshNode*)mSceneNode.findNodeByName("sphere");
     if (sphereNode)
     {
       if (event.key.code == sf::Keyboard::Left)
