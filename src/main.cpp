@@ -20,7 +20,7 @@ int main()
 
   aw::Engine engine;
   //  engine.run();
-  aw::priv::saveSettings(engine.getSettings());
+  engine.getSettings().save();
 
   LogTemp() << (aw::path::getAssetPath() + "assets/test.txt");
   aw::AssetInputStream testFile("test.txt");

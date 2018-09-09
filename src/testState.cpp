@@ -31,8 +31,8 @@ int Intersector::testCount = 0;
 TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
     : aw::State(stateMachine), mEngine(engine),
       // mCamera(aw::Camera::createOrthograpic(0, engine.getWindow().getSize().x, 0, engine.getWindow().getSize().y))
-      mCamera(aw::Camera::createPerspective(800.f / 600.f, 60.f * TO_RAD)), mCamController(&mCamera),
-      mLightCam(aw::Camera::createOrthograpic(-50.f, 50.f, -50.f, 50.f, 0.1, 500.f))
+      mCamera(aw::Camera::createPerspective(800.f / 600.f, 60.f * TO_RAD)),
+      mLightCam(aw::Camera::createOrthograpic(-50.f, 50.f, -50.f, 50.f, 0.1, 500.f)), mCamController(&mCamera)
 {
   mEventListenerId =
       mEngine.getWindow().registerEventListener(std::bind(&TestState::processEvent, this, std::placeholders::_1));
@@ -96,10 +96,10 @@ TestState::TestState(aw::StateMachine& stateMachine, aw::Engine& engine)
     auto bounds = mesh.getBounds();
     mMapOctree = std::make_unique<aw::Octree<MeshTriangle, Intersector>>(bounds, 100, 5);
     Intersector intersector;
-    for (int i = 0; i < mesh.getObjectCount(); i++)
+    for (unsigned i = 0; i < mesh.getObjectCount(); i++)
     {
       const auto& meshObj = mesh.getObject(i);
-      for (int j = 0; j < meshObj.indices.size(); j += 3)
+      for (unsigned j = 0; j < meshObj.indices.size(); j += 3)
       {
         MeshTriangle t{&meshObj, &meshObj.indices[j]};
         mMapOctree->addElement(t, intersector);
@@ -181,7 +181,7 @@ void TestState::render()
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glDisable(GL_CULL_FACE);
   mDebugRenderer.clear();
-  auto* sphereNode = (aw::MeshNode*)mSceneNode.findNodeByName("sphere");
+  // auto* sphereNode = (aw::MeshNode*)mSceneNode.findNodeByName("sphere");
   // auto bounds = mMapOctree->getBounds();
 
   // Iterate over all nodes
